@@ -31,7 +31,7 @@ jobs:
       - name: Trivy Image Scan
         uses: aquasecurity/trivy-action@0.20.0
         with:
-          image-ref: rondinelisaad/opac:${VERSION}
+          image-ref: rondinelisaad/opac:${{ env.VERSION }}
           severity: HIGH,CRITICAL
           exit-code: 1
 
