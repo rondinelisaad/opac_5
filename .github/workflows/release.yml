@@ -119,6 +119,7 @@ jobs:
       - name: Update GitOps repo (homolog)
         env:
           GITOPS_REPO: https://github.com/rondinelisaad/gitops-opac.git
+          GITOPS_TOKEN: ${{ secrets.GITOPS_TOKEN }}
         run: |
           git clone ${GITOPS_REPO}
           cd gitops-opac
