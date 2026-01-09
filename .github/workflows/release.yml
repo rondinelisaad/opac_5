@@ -93,5 +93,6 @@ jobs:
       - name: Sign image with Cosign
         env:
           COSIGN_EXPERIMENTAL: "1"
+          COSIGN_YES: "true"
         run: |
           cosign sign ${IMAGE_DIGEST}
