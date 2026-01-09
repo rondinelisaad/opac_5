@@ -82,6 +82,11 @@ jobs:
           docker push rondinelisaad/opac:${VERSION}
           docker push rondinelisaad/opac:latest
 
+      - name: Get image digest
+        run: |
+          DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' rondinelisaad/opac:${VERSION})
+          echo "IMAGE_DIGEST=${DIGEST}" >> $GITHUB_ENV
+
       - name: Install Cosign
         uses: sigstore/cosign-installer@v3
 
@@ -89,4 +94,4 @@ jobs:
         env:
           COSIGN_EXPERIMENTAL: "1"
         run: |
-          cosign sign rondinelisaad/opac:${VERSION}
+          cosign sign ${IMAGE_DIGEST}
