@@ -115,3 +115,19 @@ jobs:
             --predicate sbom-${VERSION}.json \
             --type cyclonedx \
             ${IMAGE_DIGEST}
+
+      - name: Update GitOps repo (homolog)
+        env:
+          GITOPS_REPO: https://github.com/rondinelisaad/gitops-opac.git
+        run: |
+          git clone ${GITOPS_REPO}
+          cd gitops-opac
+
+          sed -i "s|rondinelisaad/opac@sha256:PLACEHOLDER|${IMAGE_DIGEST}|" \
+            apps/opac/homolog/deployment.yaml
+
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          git commit -am "Release opac ${VERSION} (homolog)"
+          git push
