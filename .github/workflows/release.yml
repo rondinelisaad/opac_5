@@ -122,14 +122,23 @@ jobs:
           IMAGE_DIGEST: ${{ env.IMAGE_DIGEST }}
           VERSION: ${{ env.VERSION }}
         run: |
+          set -e
+
+          #Clona o repo GitOps
           git clone https://${GITOPS_TOKEN}@github.com/rondinelisaad/gitops-opac_5.git
           cd gitops-opac_5
 
-          sed -i "s|rondinelisaad/opac@sha256:PLACEHOLDER|${IMAGE_DIGEST}|" \
-            apps/opac/homolog/deployment.yaml
+          # Extrai apenas o sha256
+          DIGEST_ONLY="${IMAGE_DIGEST#*@}"
 
+          # Atualiza o digest no overlay de homologação
+          sed -i "s|digest: sha256:.*|digest: ${DIGEST_ONLY}|" \
+            apps/opac/homolog/kustomization.yaml
+
+          # Configura autor do commit
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
 
+          # Commit e push
           git commit -am "Release opac ${VERSION} (homolog)"
           git push
