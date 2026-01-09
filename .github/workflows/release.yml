@@ -105,3 +105,13 @@ jobs:
             --certificate-oidc-issuer https://token.actions.githubusercontent.com \
             --certificate-identity-regexp "https://github.com/${{ github.repository }}/*" \
             ${IMAGE_DIGEST}
+
+      - name: Attach SBOM attestation
+        env:
+          COSIGN_EXPERIMENTAL: "1"
+          COSIGN_YES: "true"
+        run: |
+          cosign attest \
+            --predicate sbom-${VERSION}.json \
+            --type cyclonedx \
+            ${IMAGE_DIGEST}
