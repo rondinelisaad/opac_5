@@ -123,7 +123,7 @@ jobs:
           VERSION: ${{ env.VERSION }}
         run: |
           git clone https://${GITOPS_TOKEN}@github.com/rondinelisaad/gitops-opac_5.git
-          cd gitops-opac
+          cd gitops-opac_5
 
           sed -i "s|rondinelisaad/opac@sha256:PLACEHOLDER|${IMAGE_DIGEST}|" \
             apps/opac/homolog/deployment.yaml
