@@ -118,10 +118,11 @@ jobs:
 
       - name: Update GitOps repo (homolog)
         env:
-          GITOPS_REPO: https://github.com/rondinelisaad/gitops-opac.git
           GITOPS_TOKEN: ${{ secrets.GITOPS_TOKEN }}
+          IMAGE_DIGEST: ${{ env.IMAGE_DIGEST }}
+          VERSION: ${{ env.VERSION }}
         run: |
-          git clone ${GITOPS_REPO}
+          git clone https://${GITOPS_TOKEN}@github.com/***/gitops-opac.git
           cd gitops-opac
 
           sed -i "s|rondinelisaad/opac@sha256:PLACEHOLDER|${IMAGE_DIGEST}|" \
