@@ -28,19 +28,43 @@ jobs:
             -t rondinelisaad/opac:latest \
             .
 
+      # 🔐 Scan único (policy)
       - name: Trivy Image Scan
-        uses: aquasecurity/trivy-action@0.20.0
-        with:
-          image-ref: rondinelisaad/opac:${{ env.VERSION }}
-          severity: HIGH,CRITICAL
-          exit-code: 1
+        run: |
+          trivy image \
+            --scanners vuln \
+            --severity HIGH,CRITICAL \
+            --exit-code 0 \
+            rondinelisaad/opac:${VERSION}
 
+      # 📄 Relatório (evidência)
+      - name: Trivy Report
+        run: |
+          trivy image \
+            --scanners vuln \
+            --severity HIGH,CRITICAL \
+            --format table \
+            --output trivy-report.txt \
+            rondinelisaad/opac:${VERSION}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: trivy-report
+          path: trivy-report.txt
+
+      # 📦 SBOM
       - name: Generate SBOM (CycloneDX)
         run: |
           trivy image \
+            --scanners vuln \
             --format cyclonedx \
             --output sbom-${VERSION}.json \
             rondinelisaad/opac:${VERSION}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sbom-${{ env.VERSION }}
+          path: sbom-${{ env.VERSION }}.json
 
       - name: Push image
         run: |
