@@ -122,7 +122,7 @@ jobs:
           IMAGE_DIGEST: ${{ env.IMAGE_DIGEST }}
           VERSION: ${{ env.VERSION }}
         run: |
-          git clone https://${GITOPS_TOKEN}@github.com/***/gitops-opac.git
+          git clone https://${GITOPS_TOKEN}@github.com/rondinelisaad/gitops-opac.git
           cd gitops-opac
 
           sed -i "s|rondinelisaad/opac@sha256:PLACEHOLDER|${IMAGE_DIGEST}|" \
