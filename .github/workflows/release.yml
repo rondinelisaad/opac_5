@@ -29,6 +29,11 @@ jobs:
             .
 
       # 🔐 Scan único (policy)
+      - name: Install Trivy
+        uses: aquasecurity/trivy-action@0.20.0
+        with:
+          version: latest
+
       - name: Trivy Image Scan
         run: |
           trivy image \
