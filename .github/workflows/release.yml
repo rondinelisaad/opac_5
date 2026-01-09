@@ -29,18 +29,12 @@ jobs:
             .
 
       # 🔐 Scan único (policy)
-      - name: Install Trivy
+      - name: Trivy Image Scan
         uses: aquasecurity/trivy-action@0.20.0
         with:
-          version: latest
-
-      - name: Trivy Image Scan
-        run: |
-          trivy image \
-            --scanners vuln \
-            --severity HIGH,CRITICAL \
-            --exit-code 0 \
-            rondinelisaad/opac:${VERSION}
+          image-ref: rondinelisaad/opac:${{ env.VERSION }}
+          severity: HIGH,CRITICAL
+          exit-code: 0
 
       # 📄 Relatório (evidência)
       - name: Trivy Report
