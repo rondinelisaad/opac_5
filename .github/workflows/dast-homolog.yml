@@ -14,7 +14,7 @@ jobs:
           rules_file_name: zap-rules.tsv
           fail_on_warning: false
           allow_issue_writing: false
-          artifact_name: zap-report
+          skip_artifacts: true
 
       - name: Upload ZAP Report
         uses: actions/upload-artifact@v4
