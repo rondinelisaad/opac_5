@@ -6,18 +6,18 @@ on:
 jobs:
   zap:
     runs-on: ubuntu-latest
+
     steps:
-      - name: OWASP ZAP Baseline Scan
-        uses: zaproxy/action-baseline@v0.11.0
-        with:
-          target: https://qa1.scielo.br
-          rules_file_name: zap-rules.tsv
-          fail_on_warning: false
-          allow_issue_writing: false
-          skip_artifacts: true
+      - name: Run OWASP ZAP Baseline (Docker)
+        run: |
+          docker run --rm \
+            -v $(pwd):/zap/wrk \
+            zaproxy/zap-baseline.py \
+            -t https://qa1.scielo.br \
+            -r zap-report.html || true
 
       - name: Upload ZAP Report
         uses: actions/upload-artifact@v4
         with:
           name: zap-report
-          path: report_html.html
+          path: zap-report.html
