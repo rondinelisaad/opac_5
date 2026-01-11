@@ -12,7 +12,8 @@ jobs:
         run: |
           docker run --rm \
             -v $(pwd):/zap/wrk \
-            zaproxy/zap2docker-stable \
+            ghcr.io/zaproxy/zaproxy:stable \
+            zap-baseline.py \
             -t https://qa1.scielo.br \
             -r zap-report.html || true
 
