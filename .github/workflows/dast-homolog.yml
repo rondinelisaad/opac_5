@@ -6,11 +6,11 @@ on:
 jobs:
   zap:
     runs-on: ubuntu-latest
-
     steps:
       - name: Run OWASP ZAP Baseline (Docker)
         run: |
           docker run --rm \
+            --user root \
             -v $(pwd):/zap/wrk \
             ghcr.io/zaproxy/zaproxy:stable \
             zap-baseline.py \
